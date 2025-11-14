@@ -7,17 +7,22 @@ export type GeoResult = {
   admin1?: string;
   timezone?: string;
 };
-type GeoResponse = { results?: GeoResult[] };
+
+export type GeoResponse = {
+  results?: GeoResult[];
+};
+
+export type DailyForecast = {
+  time: string[]; // ISO dates
+  temperature_2m_max: number[];
+  temperature_2m_min: number[];
+};
 
 export type ForecastResponse = {
   latitude: number;
   longitude: number;
   timezone: string;
-  daily: {
-    time: string[];
-    temperature_2m_max: number[];
-    temperature_2m_min: number[];
-  };
+  daily: DailyForecast;
 };
 
 const GEOCODE_URL = "https://geocoding-api.open-meteo.com/v1/search";
