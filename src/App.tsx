@@ -1,18 +1,20 @@
-import { NavLink, Outlet } from "react-router-dom";
-import "./App.css";
+import { Outlet } from "react-router-dom";
+import { HeaderNav } from "./components/HeaderNav";
+import "./index.css";
 
 export default function App() {
   return (
     <div>
-      <header style={{ display: "flex", gap: 16, alignItems: "center" }}>
-        <h1>Open-Meteo</h1>
-        <nav aria-label="Primary">
-          <NavLink to="/">Home</NavLink>
-          {" | "}
-          <NavLink to="/favorites">Favorites</NavLink>
-        </nav>
-      </header>
-      <main>
+      <a
+        href="#main"
+        className="skip-link"
+      >
+        Skip to main content
+      </a>
+
+      <HeaderNav />
+
+      <main id="main">
         <Outlet />
       </main>
     </div>
