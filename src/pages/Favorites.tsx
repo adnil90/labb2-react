@@ -1,20 +1,30 @@
 import { Link } from "react-router-dom";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
+type Fav = {
+  id: number;
+  name: string;
+  country: string;
+  admin1?: string;
+  latitude: number;
+  longitude: number;
+};
+
 export default function Favorites() {
-  const [favs, setFavs] = useLocalStorage<
-    {
-      id: number;
-      name: string;
-      country: string;
-      admin1?: string;
-      latitude: number;
-      longitude: number;
-    }[]
-  >("favs", []);
+  const [favs, setFavs] = useLocalStorage<Fav[]>("favs", []);
 
   function remove(id: number) {
     setFavs((prev) => prev.filter((f) => f.id !== id));
+  }
+
+  function itemHref(f: Fav) {
+    const params = new URLSearchParams();
+    params.set("lat", String(f.latitude));
+    params.set("lon", String(f.longitude));
+    params.set("name", f.name);
+    params.set("country", f.country);
+    if (f.admin1) params.set("admin1", f.admin1);
+    return `/item/${f.id}?${params.toString()}`;
   }
 
   if (favs.length === 0) {
@@ -27,10 +37,7 @@ export default function Favorites() {
       <ul>
         {favs.map((f) => (
           <li key={f.id}>
-            <Link
-              to={`/location/${f.id}`}
-              state={f}
-            >
+            <Link to={itemHref(f)}>
               {f.name}, {f.country}
               {f.admin1 ? ` (${f.admin1})` : ""} — [{f.latitude.toFixed(2)},
               {f.longitude.toFixed(2)}]
